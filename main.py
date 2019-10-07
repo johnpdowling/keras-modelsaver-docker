@@ -19,6 +19,7 @@ import redis
 from fastapi import FastAPI, File, HTTPException
 from starlette.requests import Request
 
+os.makedirs('./model', exist_ok=True)
 app = FastAPI()
 
 CLIENT_MAX_TRIES = int(os.environ.get("CLIENT_MAX_TRIES"))
@@ -34,6 +35,7 @@ def model(request: Request, img_file: bytes=File(...)):
     data = {"success": False}
 
     if request.method == "POST":
+        model = ResNet50(weights="imagenet")
         data["success"] = True
     # Return the data dictionary as a JSON response
     return data
